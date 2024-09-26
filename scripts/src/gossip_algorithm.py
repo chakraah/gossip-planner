@@ -1,5 +1,5 @@
 """
-Gossip Algorithm
+Gossip Algorith
 @H. Chakraa
 """
 
