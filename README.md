@@ -11,7 +11,7 @@ This Python project simulates a multi-robot mission for inspection and monitorin
 * main.py: Main script that simulates a random mission and visualizes the cost evolution over time.
 * random_scenario_generator.py: Generates a random scenario.
 * scripts/: Contains different experiment files for specific simulations:
-  * experiment_6_robots: Runs simulations with 9 different scenarios, where the number of tasks varies but the number of robots is fixed at 6.
+  * experiment_6_robots: Runs simulations with 9 scenarios where the number of tasks varies but the number of robots is fixed at 6.
   * experiment_20_tasks: Runs simulations with 9 scenarios where the number of robots varies and the number of tasks is fixed at 20.
   * experiment_scaling: Runs simulations with 9 scenarios where both the number of robots and tasks increase.
   * scripts/src/: Contains the core of the algorithm:
