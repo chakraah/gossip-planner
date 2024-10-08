@@ -5,7 +5,7 @@ main function
 
 import time
 import matplotlib.pyplot as plt
-from random_scenario_generator import random_scenario_generator
+from scripts.random_scenario_generator import random_scenario_generator
 from scripts.src.task_planner import TaskPlanner
 from scripts.src.gossip_algorithm import gossip_algorithm
 
@@ -24,7 +24,7 @@ def main():
     print(f"Number of tasks: {scenario.num_tasks}\n")
     
     # Define a limit for iterations
-    max_iterations = 10
+    max_iterations = 15
     
     # Run the gossip algorithm
     start_time = time.time()
