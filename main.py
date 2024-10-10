@@ -11,7 +11,7 @@ from scripts.src.gossip_algorithm import gossip_algorithm
 
 def main():
     
-    # Generating a random example
+    # Generating a random example with 10 robots, 40 tasks, 30 sites, and 5 measurements types
     task_requirements, robot_capabilities, cost_matrix = random_scenario_generator(10, 40, 30, 5)
     # Create a Scenario instance
     scenario = TaskPlanner(task_requirements, robot_capabilities, cost_matrix)
