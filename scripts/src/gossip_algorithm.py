@@ -9,21 +9,21 @@ def gossip_algorithm(scenario, max_iterations):
     # Get a random solution
     current_solution = scenario.generate_random_solution()
     
-    # Compute the initial cost
+    # Compute the current cost of the solution
     current_cost = scenario.compute_solution_cost(current_solution)
     
     # Lists to track costs over time
     improved_solution_costs = [current_cost]    # Costs when a better solution is found
-    gossip_iteration_costs = [current_cost]    # Costs after each gossip iteration
+    total_iteration_costs = [current_cost]     # Costs after each task exchange
     
     # Get the possible robot pairs that can exchange tasks
     robot_pairs = scenario.select_compatible_robots()
     
-    iteration = 1  # Track iterations for stopping criteria
-    iteration_s = 1  # Track iterations for solution equilibrium
-    equilibrium = 0
+    iteration_count  = 1  # Track iterations for stopping criteria
+    total_iterations = 1  # Track the total number of iterations
+    convergence_iteration = 0  # Iteration at which equilibrium is reached
         
-    while iteration < max_iterations:
+    while iteration_count < max_iterations:
         # Shuffle the robot pairs randomly
         np.random.shuffle(robot_pairs)
         
@@ -34,27 +34,25 @@ def gossip_algorithm(scenario, max_iterations):
                 
             # Compute the cost for the newly obtained solution
             new_cost = scenario.compute_solution_cost(new_solution)
-            gossip_iteration_costs.append(new_cost)
+            total_iteration_costs.append(new_cost)
                 
-            # If the new solution is worse or the same, increment the iteration count
-            if new_cost >= current_cost:
-                iteration += 1
-                iteration_s += 1
-            else:
+            if new_cost < current_cost:
+                
                 # If a better solution is found, reset the iteration count
-                iteration = 1
-                equilibrium = iteration_s
+                iteration_count = 1
+                convergence_iteration = total_iterations
                 
                 # Update to the better solution
                 current_solution = new_solution
-                
-                # Apply TSP algorithm for the pair
-                #current_solution[pair[0]-1] = scenario.branch_and_bound_tsp(current_solution[pair[0]-1])
-                #current_solution[pair[1]-1] = scenario.branch_and_bound_tsp(current_solution[pair[1]-1])
-                
                 current_cost = scenario.compute_solution_cost(current_solution)
                 
                 # Track the improved solution's cost
                 improved_solution_costs.append(current_cost)
+                
+            else:
+                
+                iteration_count += 1
+                
+            total_iterations += 1
     
-    return current_solution, improved_solution_costs, equilibrium, gossip_iteration_costs
+    return current_solution, improved_solution_costs, total_iteration_costs, convergence_iteration
