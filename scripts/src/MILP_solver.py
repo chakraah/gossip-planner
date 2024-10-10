@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
 """
-Created on Fri Oct  4 14:46:15 2024
-
-@author: Chakraa
+Linear relaxation lower bound with pyomo
+@H. Chakraa
 """
 
 import pyomo.environ as pyEnv
@@ -18,13 +16,11 @@ def MILP_solver(scenario):
     model.A = pyEnv.RangeSet(scenario.num_sites)
     model.R = pyEnv.RangeSet(scenario.num_robots)
     
-    #Index for the dummy variable u
-    #model.U = pyEnv.RangeSet(2,n)
 
-    #Decision variables xij
+    #Decision variable xijk
     model.x=pyEnv.Var(model.R,model.S,model.S, within=pyEnv.Reals, bounds=(0, 1))
 
-    #Dummy variable ui
+    #Decision variable ui
     model.u=pyEnv.Var(model.R,model.S, within=pyEnv.NonNegativeReals)
 
     #Cost Matrix cij
@@ -79,9 +75,6 @@ def MILP_solver(scenario):
         return sum(model.robot_list[M,k] * model.x[k,i,S] for i in model.S for k in model.R) >= model.task_list[M,S]
 
     model.rest4 = pyEnv.Constraint(model.S,model.M,rule=rule_const4)
-    
-    #Prints the entire model
-    #model.pprint()
 
     #Solves
     solver = pyEnv.SolverFactory('cplex')
