@@ -4,7 +4,7 @@
 
 This Python project simulates a multi-robot mission for inspection and monitoring in an industrial environment. In this mission, multiple mobile robots, each equipped with specific sensors, are tasked with performing measurements that are spatially distributed across various locations. This README provides instructions on how to use the project and run the simulations.
 
-# Description
+## Description
 
 **Here is a brief description of the provided functions:**
 
@@ -18,5 +18,5 @@ This Python project simulates a multi-robot mission for inspection and monitorin
     * MILP_solver: Compute the lower bound of the optimal solution based on the linear relaxation of the MILP solver
 
 
-# Reference
+## Reference
 
