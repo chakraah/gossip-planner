@@ -5,7 +5,6 @@ Task planning optimisation
 
 import numpy as np
 import random
-import itertools
 
 class TaskPlanner:
     
@@ -88,7 +87,7 @@ class TaskPlanner:
                 to_sites = robot_sequence[1:]-1
                 
                 travel_costs = self.cost_matrix[from_sites, to_sites]
-                
+                                
                 robot_costs[robot_idx] = np.sum(travel_costs)
                 
         # The total cost is the maximum cost incurred by any robot (makespan)
