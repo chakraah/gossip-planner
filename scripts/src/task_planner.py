@@ -89,7 +89,7 @@ class TaskPlanner:
                 travel_costs = self.cost_matrix[from_sites, to_sites]
                                 
                 robot_costs[robot_idx] = np.sum(travel_costs)
-                
+                                
         # The total cost is the maximum cost incurred by any robot (makespan)
         return np.max(robot_costs)
     
@@ -121,87 +121,6 @@ class TaskPlanner:
                          improved = True
           sequence = best
      return best
- 
-    ## | ---------------- Function: Brand & Bound algorithm with warm start --------------- |
-    
-    # Function to calculate a lower bound using a reduced cost matrix
-    def calculate_bound(self, path, warm_start_path):
-            
-        n = len(self.cost_matrix)
-        reduced_matrix = np.array(self.cost_matrix)
-        # Mark visited cities in the path
-        for i in range(len(path) - 1):
-            u, v = path[i], path[i + 1]
-            u = u['site'] 
-            v = v['site'] 
-            for j in range(n):
-                reduced_matrix[u-1][j] = 99999  # Mark row u as visited
-                reduced_matrix[j][v-1] = 99999  # Mark column v as visited
-            reduced_matrix[v-1][0] = 99999  # Avoid direct return to start
-            
-        sites = np.array([entry['site'] for entry in warm_start_path[0:-1]])
-        sites.sort()
-        sites_array = np.array(sites) - 1  # Convert to 0-based indices
-            
-        reduced_matrix = reduced_matrix[np.ix_(sites_array, sites_array)]
-        
-        # Set diagonal elements to a large value
-        np.fill_diagonal(reduced_matrix, 99999)
-            
-        # Calculate row and column minimums
-        row_min = np.min(reduced_matrix, axis=1)
-        col_min = np.min(reduced_matrix, axis=0)
-
-        return np.sum(row_min[row_min != 99999]) + np.sum(col_min[col_min != 99999])
-
-    # Branch and Bound algorithm with warm start for TSP
-    def branch_and_bound_tsp(self, warm_start_path):
-        n = len(warm_start_path)-1
-            
-        # Set the warm start upper bound
-        upper_bound = self.compute_robot_cost(warm_start_path)
-
-        # Priority queue to explore nodes
-        queue = []
-        
-        # Start from the root node (starting at city 0)
-
-        initial_bound = self.calculate_bound([{'site': 1}], warm_start_path)
-        queue.append((initial_bound, 0, [{'site': 1}], 0))  # (bound, level, path, cost)
-
-        best_path = warm_start_path
-        best_cost = upper_bound
-        
-        while queue:
-            # Find and pop the node with the minimum bound
-            queue.sort(key=lambda x: x[0])  # Sort by bound (first element of each tuple)
-            bound, level, path, cost = queue.pop(0)  # Pop the first element
-
-            queue = []
-            
-            # If we have reached the last level, complete the tour
-            if level == n - 1:
-                last_city = np.array([entry['site'] for entry in path[-1:]])
-                complete_cost = cost + self.cost_matrix[last_city[0]-1][0]  # Return to the starting city
-                
-                if complete_cost < best_cost:
-                    best_cost = complete_cost
-                    best_path = path + [{'site': 1}]  # Complete the tour
-            
-            
-            # Branching: Expand the node to visit new cities
-            for site in warm_start_path:
-                if site not in path and site in warm_start_path[1:-1]:
-                    new_path = path + [site]
-                    site = site['site'] 
-                    new_cost = cost + self.cost_matrix[path[-1]['site']-1][site-1]
-                    new_bound = new_cost + self.calculate_bound(new_path, warm_start_path)
-
-                    if new_bound < best_cost:
-                        queue.append((new_bound, level + 1, new_path, new_cost))  # Add to the queue
-                       
-        return best_path
-        
      
     ## | ---------------- Function: Task exchange mechanism --------------- |
     

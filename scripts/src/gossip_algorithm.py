@@ -56,3 +56,7 @@ def gossip_algorithm(scenario, max_iterations):
             total_iterations += 1
     
     return current_solution, improved_solution_costs, total_iteration_costs, convergence_iteration
+
+                            
+    return current_solution, improved_solution_costs, total_iteration_costs, convergence_iteration
+
