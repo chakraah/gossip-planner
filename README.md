@@ -10,7 +10,6 @@ This Python project simulates a multi-robot mission for inspection and monitorin
 
 * main.py: Main script that simulates a random mission and visualizes the cost evolution over time.
 * scripts/: Contains different experiment files for specific simulations:
-  * simulation: Runs simulations with scenarios that range from 5 to 20 robots and tasks from 10 to 40.
   * random_scenario_generator.py: Generates a random scenario.
   * scripts/src/: Contains the core of the algorithm:
     * TaskPlanner: Provides functions necessary for task planning, such as generating random solutions, calculating costs, 2-opt local search optimization, and task exchange mechanism between robots.
